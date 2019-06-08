@@ -16,8 +16,8 @@ public class ArchiveDemo2 {
    public static void main(String[] args)
       throws IOException, FileNotFoundException {
 
-         String zipFile = "myzipfile.zip";
-         String[] files = { "myfile.txt, /home/mano/doc/file2.txt,
+         String zipFile = "myzipfile_vijayalakshmi.zip";
+         String[] files = { "myfile.txt, /home/vijayalakshmi/doc/file2.txt,
              file3.png" };
          zip(zipFile, files);
       }
@@ -73,7 +73,7 @@ public class ArchiveDemo3 {
 
    public static void main(String[] args) {
       String zipFile = "myzipfile.zip";
-      String unziploc = "/home/mano/test";
+      String unziploc = "/home/vijayalakshmi/test";
       unzip(zipFile, unziploc);
    }
 
