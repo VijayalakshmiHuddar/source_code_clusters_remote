@@ -1,0 +1,110 @@
+ Volume in drive C has no label.
+ Volume Serial Number is D8A5-E423
+
+ Directory of C:\Users\Desktop\Data_archive_clusters
+
+12-04-2019  19:03    <DIR>          .
+12-04-2019  19:03    <DIR>          ..
+12-04-2019  18:55             1,890 archive.sh
+12-04-2019  18:56             2,003 archivebash.sh
+12-04-2019  18:56             2,055 archivebourne.sh
+12-04-2019  18:55             1,947 archive_one.sh
+12-04-2019  18:56             5,789 fusion.java
+12-04-2019  19:02             1,751 jarchive.txt
+12-04-2019  19:02             1,808 jarchivecluster.txt
+12-04-2019  19:03                 0 jarch_cluster.txt
+12-04-2019  19:03             1,859 jarch_one.txt
+12-04-2019  18:11             2,744 java.txt
+12-04-2019  18:13             4,753 javaarchive.java
+12-04-2019  18:13             3,828 javaarchive.txt
+12-04-2019  18:11             3,335 javaarchivecluster.txt
+12-04-2019  18:11             2,744 javaarchive_committed.txt
+12-04-2019  18:14             4,816 javaarchive_one.java
+12-04-2019  18:14             3,890 javaarchive_one.txt
+12-04-2019  19:01    <DIR>          jcdb
+12-04-2019  18:15             4,860 jcluster.java
+11-04-2019  19:09               643 meanstack.txt
+11-04-2019  19:30             1,228 mongodb.txt
+12-04-2019  18:58    <DIR>          mongodb_archive
+12-04-2019  18:15    <DIR>          mongodb_cluster
+12-04-2019  18:59    <DIR>          mongodb_image
+11-04-2019  19:31             1,285 nuclear_fusion.java
+12-04-2019  19:00    <DIR>          nuclear_fusion_merge
+12-04-2019  18:19             1,643 pythonarch.py
+12-04-2019  18:22             2,231 pythoncluster.py
+12-04-2019  18:20             1,163 pythoncluster.txt
+12-04-2019  18:23             1,597 pythondataarchive.py
+12-04-2019  18:23             1,840 pythondataarchive.txt
+              25 File(s)         61,702 bytes
+               7 Dir(s)   6,187,241,472 bytes free
+
+package org.mano.example;
+
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.util.zip.DataFormatException;
+import java.util.zip.Deflater;
+import java.util.zip.Inflater;
+
+public class ArchiveDemo {
+
+   public static void main(String[] args)
+         throws IOException, DataFormatException {
+
+      String inputData = "An archive refers to a collection of one or more files put together as a single unit. Often in Java programs, we come across an archive file called a JAR (Java Archive). This type of file is common to every Java programmer. Archive files are created by using file archive software such as WinZip, 7-zip, tar, and so forth. These types of files are particularly useful to store and transmit multiple files as a single unit. File archives sometime employ data compression and encryption as well. This article delves into some of the key concepts of working with archive files by using Java programming."
+
+      byte[] compressedByte = compress(inputData.getBytes(),
+         Deflater.BEST_COMPRESSION, false);
+      byte[] decompressedByte=decompress(compressedByte, false);
+
+      String outputData=new String(decompressedByte);
+
+      System.out.println("Input Data: " + inputData);
+      System.out.println("Uncompressed data length: "
+         + inputData.getBytes().length);
+      System.out.println("Compressed data length: "
+         + compressedByte.length);
+      System.out.println("Decompressed data length: "
+         + decompressedByte.length);
+      System.out.println("Output Data: " + outputData);
+
+   }
+
+   public static byte[] decompress(byte[] input, boolean format)
+         throws IOException, DataFormatException {
+      Inflater inflater = new Inflater(format);
+      inflater.setInput(input);
+      ByteArrayOutputStream baout = new ByteArrayOutputStream();
+      byte[] buff = new byte[1024];
+      int count = 0;
+
+      while (!inflater.finished()) {
+         count = inflater.inflate(buff);
+         if ( count > 0)
+            baout.write(buff, 0, count);
+      }
+      inflater.end();
+      return baout.toByteArray();
+   }
+
+   public static byte[] compress(byte[] data, int compressionLevel,
+         boolean format) throws IOException {
+
+      Deflater deflater = new Deflater(compressionLevel, format);
+      deflater.setInput(data);
+      deflater.finish();
+
+      ByteArrayOutputStream baout = new ByteArrayOutputStream();
+      byte[] buff = new byte[1024];
+      int count = 0;
+
+      while (!deflater.finished()) {
+         count = deflater.deflate(buff);
+         if (count > 0)
+            baout.write(buff, 0, count);
+      }
+      deflater.end();
+      return baout.toByteArray();
+   }
+}
+
